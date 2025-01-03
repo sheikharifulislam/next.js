@@ -192,7 +192,7 @@ impl Metadata {
 }
 
 /// Metadata files that can be placed in the root of the app directory.
-#[turbo_tasks::value(local)]
+#[turbo_tasks::value]
 #[derive(Default, Clone, Debug)]
 pub struct GlobalMetadata {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -214,7 +214,7 @@ impl GlobalMetadata {
     }
 }
 
-#[turbo_tasks::value(local)]
+#[turbo_tasks::value]
 #[derive(Debug)]
 pub struct DirectoryTree {
     /// key is e.g. "dashboard", "(dashboard)", "@slot"
@@ -222,7 +222,7 @@ pub struct DirectoryTree {
     pub modules: AppDirModules,
 }
 
-#[turbo_tasks::value(local)]
+#[turbo_tasks::value]
 #[derive(Clone, Debug)]
 struct PlainDirectoryTree {
     /// key is e.g. "dashboard", "(dashboard)", "@slot"
@@ -416,7 +416,7 @@ async fn get_directory_tree_internal(
     .cell())
 }
 
-#[turbo_tasks::value(local)]
+#[turbo_tasks::value]
 #[derive(Debug, Clone)]
 pub struct AppPageLoaderTree {
     pub page: AppPage,
@@ -512,6 +512,7 @@ impl ValueDefault for FileSystemPathVec {
     ValueDebugFormat,
     Debug,
     TaskInput,
+    NonLocalValue,
 )]
 pub enum Entrypoint {
     AppPage {
@@ -539,7 +540,7 @@ impl Entrypoint {
     }
 }
 
-#[turbo_tasks::value(transparent, local)]
+#[turbo_tasks::value(transparent)]
 pub struct Entrypoints(FxIndexMap<AppPath, Entrypoint>);
 
 fn is_parallel_route(name: &str) -> bool {
